@@ -1,0 +1,20 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const user_routes_1 = __importDefault(require("./user.routes"));
+const upload_routes_1 = __importDefault(require("./upload.routes"));
+const song_routes_1 = __importDefault(require("./song.routes"));
+const auth_routes_1 = __importDefault(require("./auth.routes"));
+const playList_routes_1 = __importDefault(require("./playList.routes"));
+const device_routes_1 = __importDefault(require("./device.routes"));
+const router = express_1.Router();
+router.use(user_routes_1.default);
+router.use(song_routes_1.default);
+router.use(upload_routes_1.default);
+router.use(auth_routes_1.default);
+router.use(playList_routes_1.default);
+router.use(device_routes_1.default);
+exports.default = router;
