@@ -1,0 +1,103 @@
+CRP IoT Music API
+
+COMANDOS PROGRAMA:
+program start 	- Iniciar modo programa
+program stop 	- Suspender modo programa
+program list	- Lista los eventos en el programa
+program list 66 - Lista los detalles del evento con id 66
+program remove 66 - Remueve el evento 66 del programa
+program add <id>,<playlist.m3u>,<start>,<end>,<shuffle>,<repeat>,<random>
+
+Ejemplo:
+program add 66,109656.m3u,1636970400,1636972200,1,1,1
+
+
+COMANDOS PARA DESCARGAR PLAYLIST:
+download <url>	- Descarga la playlist del servidor
+
+Ejemplo:
+download http://dronemybox.com/crp/iotmusic/109657.m3u
+
+COMANDOS PARA TOCAR UNA SOLA CANCION:
+playsong <archivo>
+
+Ejemplo:
+playsong 009199.mp3  - Sube a la cola solo esa cancion
+
+
+COMANDOS PARA TOCAR UNA PLAYLIST:
+playlist <archivo>
+
+Ejemplo:
+playsong 109194.m3u  - Sube a la cola la playlist y empieza a tocarla
+
+
+COMANDO PARA ELIMINAR UNA PLAYLIST
+removeplaylist <archivo>
+
+Ejemplo:
+removeplaylist music1.m3u
+
+COMANDO PARA VERIFICAR EL ESTADO DEL CANAL
+speedtest
+
+Nota: El speedtest queda encolado y al cabo de 1 o 2 minutos se puede consultar via propiedades
+el resultado
+
+COMANDOS MPC NATIVOS
+mpc status -f %file%	- lista el estado de la cancion 
+mpc clear		- borra la cola
+mpc load <playlist> 	- Carga la playlist desde un archivo
+			  Nota, no usar la extension .m3u, solo el nombre.
+mpc play		- toca la playlist que este cargada en la cola
+mpc play 5		- toca la cancion 5 en la playlist cargada
+mpc volume 15		- baja el volumen a 15%
+mpc seek 45%		- mueve la cancion hasta el 45% de duracion
+mpc shuffle		- baraja la cola
+mpc random		- toca musica aleatoria desde la cola
+mpc repeat		- cuando se acaba la ultima cancion, repite de nuevo la cola
+mpc current -f %file%	- lista el archivo de la cancion que esta tocando en el momento
+mpc queue -f %file%	- lista la cancion que sigue en la playlist
+mpc next		- toca la siguiente cancion
+mpc prev		- toca la cancion anterior
+mpc playlist -f %file%	- lista las canciones en la cola
+mpc lsplaylists		- lista las playlist en el disco
+mpc stats		- muestra estadisticas
+
+RUTAS POST
+Ejemplo:
+Para ejecutar el comando "program start" enviar un POST a:
+https://crp.azureiotcentral.com/api/devices/rpi-02/commands/mpc?api-version=1.0
+body:
+{
+  "request": "program start"
+}
+
+
+RUTAS GET
+Para obtener propiedades desde el ultimo comando ejecutado
+Se recomienda ejecutar un comando primero para obtener el estado mas actualizado
+
+Ejemplo:
+Para obtener propiedades enviar un GET a:
+https://crp.azureiotcentral.com/api/devices/rpi-02/properties?api-version=1.0
+
+"ProgramMode": true,		- Si el modo programa esta o no habilitado
+"ProgramState": false,		- Si en el momento esta corriendo algun evento
+"ProgramNumEvents": 1,          - Numero de eventos encolados
+"ProgramNextEvent": 66,         - Evento que sigue en el programa
+"PlayingSongState": true,       - Si la cancion se esta tocando o esta en pausa
+"PlayingSong": "009199.mp3",    - Archivo de la cancion que se esta tocando
+"NextSong": "009199.mp3",       - Archivo de la siguiente cancion en cola
+"Volume": 40,                   - Nivel de volumen de 0 a 100
+"Repeat": true,                 - Si la bandera Repeat esta habilitada
+"Random": true                  - Si la bandera Random esta habilitada
+"SpeedtestTimestamp": 2021-11-23T00:37:32.536220Z   - Tiempo en que se genero la prueba speedtest
+"SpeedtestDownload": 117,359,072.67		    - Velocidad de descarga en bits/s
+"SpeedtestUpload": 12,218,523.67		    - Velocidad de subida en bits/s
+"SpeedtestPing": 73.98				    - Tiempo del ping en mseg
+"DownloadFile":/home/pi/Music/Flute1.mp3	- Current file being downloaded since last update
+"DownloadSize":7,474,551.00			- File size in bytes
+"DownloadPorcentage":50.1			- File porcentage since last update
+"DownloadTime": 21				- Time remaining to complete the download in seconds
+ 

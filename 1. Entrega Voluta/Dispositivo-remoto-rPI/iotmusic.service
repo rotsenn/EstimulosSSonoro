@@ -1,0 +1,13 @@
+[Unit]
+Description=IoT Music Service
+After=multi-user.target
+
+[Service]
+WorkingDirectory=/home/pi
+User=pi
+Type=simple
+ExecStart=python3 /home/pi/crp_iot_music.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

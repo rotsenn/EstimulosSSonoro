@@ -1,0 +1,8 @@
+﻿El raspberry recibe señales de azure iot y ese tambien se comunica con la pagina web
+Juan se encarga de la programacion de raspberrys y jhonatan de la programacion dada alcliente (frontend y backend paginas web)
+La api comunica la pagina azure con voluta. Voluta es la página entregada al cliente, allí podra añadir dispositivos, crear playlist, imágenes, y programar eventos.
+En heroku esta el front end, Heroku (Montado en nodejs y angular)
+Digital ocean el almacenamiento de las canciones (base de datos especialmente para canciones)
+Mongo (base de datos no relacional)
+(Mongo y digital conectados entre si para el front)
+
