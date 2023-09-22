@@ -1,0 +1,14 @@
+
+FRONT (voluta_ANGULAR.zip)
+ FRAMEWORK ANGULAR 12.1.2
+ para instalar modulos: "npm install"
+
+API VOLUTA (voluta_API_NODE.zip)
+ NODE JS - EXPRESS 4.17.1 - MONGO DB
+ Api con los esquemas DB - conexión a DB y lógica.
+ para instalar modulos: "npm install"
+
+API_UPLOAD (voluta_API_UPLOAD.zip) 
+ NODE JS - EXPRESS 4.17.1
+ Encargada de almacemar los mp3 en servidor
+ para instalar modulos: "npm install"
