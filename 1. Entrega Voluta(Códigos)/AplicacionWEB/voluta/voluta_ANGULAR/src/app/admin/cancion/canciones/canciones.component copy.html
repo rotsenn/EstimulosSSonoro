@@ -1,0 +1,85 @@
+<section class="hbox stretch" style="margin-top: 60px;">
+    <aside class="aside-lg bg-light b-r" id="aside">
+        <div class="wrapper" *ngIf="nuevaCancion || editarCancion">
+            <h4 class="m-t-none" *ngIf="nuevaCancion">Crear canción</h4>
+            <h4 class="m-t-none" *ngIf="editarCancion">Editar canción</h4>
+            <form [formGroup]="cancionFormGroup">
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input formControlName="name" name="name" type="text" placeholder="Nombre de la canción" class="input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Duración</label>
+                    <input formControlName="duration" name="duration" type="text" placeholder="Duracion de la canción" class="datepicker input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input formControlName="description" name="description" type="text" placeholder="Duracion de la canción" class="datepicker input-sm form-control">
+                </div>
+                <div class="alert alert-danger" *ngIf="msgError !== ''">
+                    <i class="fa fa-ban-circle"></i><strong>Alerta !</strong> <a href="#" class="alert-link"> {{msgError}}</a>
+                </div>
+                <div class="alert alert-success" *ngIf="msgExito !== ''">
+
+                    <i class="fa fa-ban-circle"></i><strong>Exito !</strong> <a href="#" class="alert-link"> {{msgExito}}</a>
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="nuevaCancion"><button (click)="crearCancion()" class="btn btn-sm btn-default" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>    Crear cancion</button></div>
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="editarCancion"><button (click)="editarCancionDb()" class="btn btn-sm btn-info" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>   Editar cancion</button> -||- <button (click)="cancelarEdicion()"
+                class="btn btn-sm btn-danger"> <i class="fa fa-times"></i> Cancelar</button></div>
+
+
+        <div class="wrapper" *ngIf="!nuevaCancion && !editarCancion">
+            <div class="panel wrapper">
+                <div class="row text-center">
+                    <span style="color: blue">{{album?.title}}   </span>
+                    <div class="col-xs-12">
+                        <a href="javascript:;">
+                            <span class="m-b-xs h4 block">{{paginacion?.totalItems}}</span>
+                            <small class="text-muted">Canciones</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group btn-group-justified m-b">
+                <a *ngIf="!nuevaCancion" (click)="nuevaCancion = true" href="javascript:;" class="btn btn-s-md btn-success btn-rounded">Crear una canción</a>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="!nuevaCancion && !editarCancion && subirCancion" class="panel-body" style="background-color: aqua;">
+
+            <span class="timeline-icon"><i class="icon-music-tone-alt"></i></span>
+            <div class="text-sm">{{cancionSubir.name}}</div>
+            <div class="m-t-sm timeline-action">
+                <button (click)="cancionInput.click()" class="btn btn-sm btn-default btn-bg"><i class="fa fa-paperclip"></i> Seleccionar canción</button>
+                <button *ngIf="cancionTemp" (click)="subirCancionFile()" style="margin-left: 5px;" class="btn btn-sm btn-info btn-bg"><i class="fa fa-pause"></i> Guardar canción</button>
+            </div>
+            <input #cancionInput type="file" (change)="cambiarCancion($event.target )" name="" id="" style="display: none;">
+            <br>
+            <div class="alert alert-danger" *ngIf="msgError !== ''">
+
+                <i class="fa fa-ban-circle"></i><strong>Alerta !</strong> <a href="#" class="alert-link"> {{msgError}}</a>
+            </div>
+            <div class="alert alert-success" *ngIf="msgExito !== ''">
+
+                <i class="fa fa-ban-circle"></i><strong>Exito !</strong> <a href="#" class="alert-link"> {{msgExito}}</a>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+
+</section>

@@ -1,0 +1,168 @@
+<section class="vbox" style="margin-top: 60px">
+    <section class="scrollable">
+        <section class="hbox stretch">
+            <aside class="aside-lg bg-light lter b-r">
+                <section class="vbox">
+                    <section class="scrollable">
+                        <div class="wrapper">
+                            <div class="text-center m-b m-t">
+                                <a href="javascript:;" (click)="urlDispositivo()" class="thumb-lg">
+                                    <img src="assets/images/rasp.jpeg" class="img-circle">
+                                </a>
+                                <div>
+                                    <div class="h3 m-t-xs m-b-xs">{{dispositivo?.name}} ({{dispositivo?.identifier}})</div>
+                                    <small class="text-muted"><i class="fa fa-map-marker"></i> {{dispositivo?.location}}</small><br>
+                                    <small class="text-muted"> {{dispositivo?.description}}</small>
+                                </div>
+                            </div>
+                            <div class="panel wrapper">
+                                <div class="row text-center">
+                                    <div class="col-xs-12">
+                                        <a href="javascript:;">
+                                            <span class="m-b-xs h4 block">{{dispositivo?.playLists?.length}} <a *ngIf="dispositivo?.playLists?.length < 1">0</a></span>
+                                            <small class="text-muted">Listas de reproducción</small>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </section>
+                </section>
+            </aside>
+            <aside class="bg-white">
+                <section class="vbox">
+
+                    <section class="scrollable">
+                        <div class="tab-content">
+
+
+                            <!-- ///////////////////////////////////// -->
+
+
+                            <section class="" id="" style="margin-top: 0px;  padding: 10px; ">
+                                <a href="javascript:;" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin"><i class="icon-refresh i-lg  inline" id="refresh"></i></a>
+                                <h2 class="font-thin m-b">Añadir listas de reproducción al dispositivo.
+
+                                </h2>
+                                <div class="row row-sm">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 10px; padding-left: 0px;">
+                                        <input #terminoBuscar (keyup.enter)="buscarPlayList(terminoBuscar.value)" type="text" name="" class="form-control" id="" placeholder="Buscar PlayList ... (enter)" style="border: none;">
+                                    </div>
+
+                                    <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let p of playLists">
+                                        <div class="item">
+                                            <div class="pos-rlt">
+                                                <div class="bottom">
+                                                    <!-- <span class="badge bg-info m-l-sm m-b-sm">03:20</span>  -->
+                                                </div>
+                                                <div class="item-overlay opacity r r-2x bg-black">
+
+                                                    <div class="center text-center m-t-n" (click)="playListSeleccionada(p)">
+                                                        <a href="javascript:;"><i class="icon-cloud-upload i-2x"></i></a>
+                                                    </div>
+
+                                                </div>
+                                                <div class="top">
+                                                    <span class="pull-right m-t-sm m-r-sm badge bg-info">{{p.songs.length}}</span>
+
+                                                </div>
+                                                <img [src]="p.img | imagen: 'playListsIMG'" alt="Img-Playlist" class="r r-2x img-full">
+                                            </div>
+                                            <div class="padder-v">
+                                                <a href="javascript:;" class="text-ellipsis">{{p.name}}</a>
+                                                <a href="javascript:;" class="text-ellipsis text-xs text-muted">{{p.type}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <br><br>
+                                <footer class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-sm-4 hidden-xs">
+
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <small class="text-muted inline m-t-sm m-b-sm">Mostrando desde <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) < 1">1</span>  <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) > 0">{{(paginacion.items * paginacion.pagina) - paginacion.items }}</span> a    <span *ngIf="(paginacion.items * paginacion.pagina) >= paginacion.totalItems "> {{paginacion.totalItems}}</span>  <span *ngIf="(paginacion.items * paginacion.pagina) < paginacion.totalItems ">{{paginacion.items * paginacion.pagina}}</span>      de {{ paginacion.totalItems }} Listas de reproducción</small>
+                                        </div>
+                                        <div class="col-sm-4 text-right text-center-xs">
+                                            <ul *ngIf="!buscadorPlayList && paginacion.paginaTotal > 1" class="pagination pagination-sm m-t-none m-b-none">
+                                                <li [ngClass]="{'disabled': !btnAnt}"><a (click)="paginaAnterior();" href="javascript:;"><i class="fa fa-chevron-left"></i> Anterior</a></li>
+
+                                                <li [ngClass]="{'disabled': !btnSig}"><a (click)="paginaSiguiente();" href="javascript:;">Siguiente<i class="fa fa-chevron-right"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </footer>
+
+                            </section>
+
+                            <!-- ///////////////////////////////////////////////// -->
+
+                        </div>
+                    </section>
+                </section>
+            </aside>
+            <aside class="col-lg-3 b-l">
+                <section class="vbox">
+                    <section class="scrollable padder-v">
+                        <div class="panel">
+                            <h4 class="font-thin padder" style="font-weight: bold;">PlayList Seleccionada</h4>
+                        </div>
+
+                        <div class="panel clearfix" *ngIf="playList">
+                            <div class="panel-body">
+                                <a href="javascript:;" class="thumb pull-left m-r">
+                                    <img [src]="playList?.img | imagen: 'playListsIMG'" alt="Img-Playlist" class="img-thumbnail">
+                                </a>
+                                <div class="clear">
+                                    <a href="javascript:;" class="text-info">{{playList?.name}} </a>
+                                    <small class="block text-muted">{{playList?.type}}</small>
+                                    <small class="block text-muted">{{playList?.description}}</small>
+                                    <hr>
+                                    <a href="javascript:;" *ngIf="!loading" (click)="agregarPlayListADispositivo()" class="btn btn-xs btn-success m-t-xs">Añadir a dispositivo</a>
+
+                                    <span *ngIf="loading">
+                                        <i class="fa fa-spinner fa fa-spin fa fa-large"></i> <label class="label bg-dark m-l-xs">{{msgLoading}}</label>
+                                    </span>
+                                    <br>
+                                    <br>
+
+
+                                </div>
+                                <div *ngIf="msgErrorLoading !== '' " class="alert alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert">×</button>
+                                    <i class="fa fa-ban-circle"></i> {{msgErrorLoading}}
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="panel clearfix" *ngIf="playList?.songs?.length > 0">
+                            <div class="panel-body">
+
+                                <div class="clear">
+                                    <p>Canciones de la playList Seleccionada</p>
+                                    <hr>
+
+                                    <li class="list-group-item" *ngFor="let pls of playList?.songs ">
+
+                                        <a href="javascript:;" (click)="reproducirCancion(pls.song)" class=" jp-play-me m-r-sm pull-left "><i style="font-size: 10px;"  class="icon-control-play text "></i><i  class="icon-control-pause
+                                            text-active "></i></a>
+                                        <div class="clear text-ellipsis "><span style="font-size: 10px;">{{pls.song.name | uppercase}}</span></div>
+                                    </li>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </section>
+            </aside>
+        </section>
+    </section>
+</section>

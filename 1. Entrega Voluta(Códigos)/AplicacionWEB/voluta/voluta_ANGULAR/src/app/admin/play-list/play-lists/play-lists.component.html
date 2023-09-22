@@ -1,0 +1,286 @@
+<section class="hbox stretch" style="margin-top: 60px;">
+    <aside class="aside-lg bg-light b-r" id="aside">
+        <div class="wrapper" *ngIf="nuevaPlayList || editarPlayList">
+            <h4 class="m-t-none" *ngIf="nuevaPlayList">Crear playList</h4>
+            <h4 class="m-t-none" *ngIf="editarPlayList">Editar playList</h4>
+            <form [formGroup]="playListFormGroup">
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input formControlName="name" name="name" type="text" placeholder="Nombre de la playList" class="input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <input formControlName="type" name="type" type="text" placeholder="Tipo" class="datepicker input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <!-- <input formControlName="description" name="description" type="text" placeholder="Duracion de la canción" class="datepicker input-sm form-control"> -->
+                    <textarea id="" formControlName="description" name="description" class="form-control" cols="3" rows="3" placeholder="Ingresa una descripción"></textarea>
+                </div>
+                <div class="alert alert-danger" *ngIf="msgError !== ''">
+                    <i class="fa fa-ban-circle"></i><strong>Alerta !</strong> <a href="javascript:;" class="alert-link"> {{msgError}}</a>
+                </div>
+                <div class="alert alert-success" *ngIf="msgExito !== ''">
+
+                    <i class="fa fa-ban-circle"></i><strong>Exito !</strong> <a href="javascript:;" class="alert-link"> {{msgExito}}</a>
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="nuevaPlayList"><button (click)="crearPlayList()" class="btn btn-sm btn-default" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>    Crear playList</button></div>
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="editarPlayList"><button (click)="editarPlayListDb()" class="btn btn-sm btn-info" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>   Editar playList</button> -||- <button (click)="cancelarEdicion()"
+                class="btn btn-sm btn-danger"> <i class="fa fa-times"></i> Cancelar</button></div>
+
+
+
+        <div class="wrapper" *ngIf="!nuevaPlayList && !editarPlayList">
+            <div class="panel wrapper">
+                <div class="row text-center">
+                    <span style="color: blue">{{playList?.title}}   </span>
+                    <div class="col-xs-12">
+                        <a href="javascript:;">
+                            <span class="m-b-xs h4 block">{{paginacion?.totalItems}}</span>
+                            <small class="text-muted">Playlists</small>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group btn-group-justified m-b">
+                <a *ngIf="!nuevaPlayList" (click)="nuevaPlayList = true" href="javascript:;" class="btn btn-s-md btn-success btn-rounded">Crear playList</a>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="!nuevaPlayList && !editarPlayList && subirPlayList" class="panel-body">
+
+            <section class="panel panel-info">
+                <div class="panel-body">
+
+                    <div class="clear">
+                        <a href="javascript:;" class="text-info"><i class="icon-playlist"></i> {{playListSubir.name}} <i class="icon-twitter"></i></a>
+                        <br><br>
+                        <small class="block text-muted"></small>
+                        <button [disabled]="loading" (click)="cancionInput.click()" class="btn btn-sm btn-default btn-bg"><i class="fa fa-paperclip"> </i>  Adjuntar</button>
+                        <button [disabled]="loading" *ngIf="playListTemp" (click)="subirImagen()" style="margin-left: 5px;" class="btn btn-sm btn-info btn-bg"><i class="fa fa-spinner fa fa-spin fa fa-large" *ngIf="loading"></i>  <i class="fa fa-picture-o"> </i>  Enviar imagen</button>
+
+                    </div>
+                </div>
+            </section>
+
+
+
+            <input #cancionInput type="file" (change)="cambiarImagen($event.target )" name="" id="" style="display: none;">
+            <br>
+            <div class="alert alert-danger" *ngIf="msgError !== ''">
+
+                <i class="fa fa-ban-circle"></i><strong>Alerta !</strong> <a href="javascript:;" class="alert-link"> {{msgError}}</a>
+            </div>
+            <div class="alert alert-success" *ngIf="msgExito !== ''">
+
+                <i class="fa fa-ban-circle"></i><strong>Exito !</strong> <a href="javascript:;" class="alert-link"> {{msgExito}}</a>
+            </div>
+
+        </div>
+
+        <div *ngIf="msgLoading !== ''" style="padding: 15px;">
+            <p style="color:blue">{{msgLoading}}</p>
+        </div>
+
+
+    </aside>
+
+
+
+    <section class="vbox animated fadeInUp">
+        <section class="scrollable">
+
+            <section class="vbox" style="margin-top: 0px;">
+                <section>
+                    <section class="hbox stretch">
+                        <!-- .aside -->
+
+                        <!-- /.aside -->
+                        <section id="content">
+                            <section class="vbox">
+                                <section class="w-f-md">
+                                    <section class="hbox stretch bg-black dker">
+                                        <!-- side content -->
+                                        <aside class="col-sm-5 no-padder" id="sidebar">
+                                            <section class="vbox animated fadeInUp">
+                                                <section class="scrollable" style="padding: 20px;">
+                                                    <input #teminoBusqueda (keyup.enter)="buscarPlayList(teminoBusqueda.value)" type="text" placeholder="Buscar playList  (enter)" class="form-control" style="background-color: #232C32; border:none; color:silver;">
+                                                    <br>
+                                                    <ul class="list-group list-group-lg no-radius no-border  m-t-n-xxs  auto">
+                                                        <li *ngFor="let c of playLists" class="list-group-item c-color">
+                                                            <a href="javascript:;" class="pull-left thumb-sm m-r">
+                                                                <img [src]="c.img | imagen: 'playListsIMG'" style="max-height: 30px; padding: 0px;">
+                                                            </a>
+                                                            <div class="pull-right m-l">
+                                                                <a href="javascript:;" title="Imagen playList" (click)="adjuntarPlayList(c._id); loading = false" class="m-r-sm"><i class="fa fa-picture-o"></i></a>
+                                                                <a href="javascript:;" title="Actualizar playList" (click)="actualizarPlayListForm(c._id)" class="m-r-sm"><i class="fa icon-pencil"></i></a>
+                                                                <a href="javascript:;" (click)="verCancionesPlayList(c._id);" title="Canciones de la playList" data-toggle="modal" data-target="#myModal"><i class="icon-playlist"></i></a> &nbsp;
+                                                                <a routerLink="/admin/playList/{{c._id}}" title="Ver playList" data-toggle="modal"><i class="icon-eye"></i></a> &nbsp;
+                                                                <a href="javascript:;" (click)="playListEliminarId = c._id; namePlayListEliminar = c.name; campoEliminar.value = '' " data-toggle="modal" data-target="#myModal2" title="Eliminar PlayList" class="m-r-sm"><i class="fa fa-trash-o" style="color: red;"></i></a>
+                                                            </div>
+
+                                                            <div class="clear text-ellipsis">
+                                                                <span [ngClass]="{'rojo': c.file === null}">{{ c.name }}</span>
+                                                                <span [ngClass]="{'rojo': c.file === null}" class="text-muted"> - - Tipo: {{c.type}}</span> &nbsp;&nbsp;&nbsp; -
+                                                                <span class="text-muted">  {{c.description}}</span>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+
+                                                    <footer class="panel-footer" style="background-color: #0D1215;">
+                                                        <div class="row">
+                                                            <div class="col-sm-4 hidden-xs">
+                                                                <span *ngIf="!buscadorPlayList && paginacion.paginaTotal > 1">
+                                                                <select #numItem (change)="cambiarItem(numItem.value)" class="input-sm form-control input-s-sm inline v-middle">
+                                                                    <option value="">listar</option>
+                                                                    <option  value="20">20 Dispositivos</option>
+                                                                    <option  value="50">50 Dispositivos</option>
+                                                                    <option  value="100">100 Dispositivos</option>
+                                                                </select>
+                                                               
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-sm-4 text-center">
+                                                                <small class="text-muted inline m-t-sm m-b-sm">Listar <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) < 1">1</span>  <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) > 0">{{(paginacion.items * paginacion.pagina) - paginacion.items }}</span> a    <span *ngIf="(paginacion.items * paginacion.pagina) >= paginacion.totalItems "> {{paginacion.totalItems}}</span>  <span *ngIf="(paginacion.items * paginacion.pagina) < paginacion.totalItems ">{{paginacion.items * paginacion.pagina}}</span>      de {{ paginacion.totalItems }} play lists</small>
+                                                            </div>
+                                                            <div class="col-sm-4 text-right text-center-xs" *ngIf="!buscadorPlayList && paginacion.paginaTotal > 1">
+                                                                <ul class="pagination pagination-sm m-t-none m-b-none">
+                                                                    <li [ngClass]="{'disabled': !btnAnt}">
+                                                                        <a href="javascript:;" (click)="paginaAnterior()"><i class="fa fa-chevron-left"></i> Anterior</a>
+                                                                    </li>
+
+                                                                    <li [ngClass]="{'disabled': !btnSig}">
+                                                                        <a href="javascript:;" (click)="paginaSiguiente() ">Siguiente <i class="fa fa-chevron-right "></i></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </footer>
+
+                                                </section>
+
+                                            </section>
+                                        </aside>
+                                        <!-- / side content -->
+
+                                    </section>
+                                </section>
+
+                            </section>
+
+                        </section>
+                    </section>
+                </section>
+
+            </section>
+
+
+        </section>
+    </section>
+
+</section>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Canciones de la playList: <span style="font-weight: bold;">{{NombrePlayListCanciones}}</span></h4>
+            </div>
+            <div class="modal-body">
+                <!-- ////////////////////////// -->
+
+                <section class="panel panel-default">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover b-t b-light">
+
+                            <tbody>
+                                <tr *ngFor="let ca of cancionesPlayList">
+                                    <td>
+                                        <i *ngIf="!ca.song.rp" (click)="startPlayer(ca.song)" class="icon-control-play mano hoverColor"></i>
+                                        <i *ngIf="ca.song.rp" (click)="startPlayer(ca.song)" style="color: darkcyan;" class="icon-control-pause mano hoverColor"></i>
+                                    </td>
+                                    <td>{{ca?.song?.name}}</td>
+                                </tr>
+
+
+                            </tbody>
+
+
+                        </table>
+                        <div style="text-align: center; padding: 15px">
+
+                            <div class="audio-file">
+
+                                <div>
+                                    <span id="play-song-title2" style="margin-left: 10px;">
+                                            
+                                    </span>
+                                </div>
+
+                                <audio controls id="player2" style="max-width: 88%; max-height: 25px; margin-top: 5px; margin-left: 10px; ">
+                                    <source id="mp3-source2" src="" type="audio/mpeg" style="background-color: burlywood;">
+                                    Tu navegador no es compatible
+                                </audio>
+
+
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <!-- //////////////////////////////// -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Eliminar PlayList -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-small" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Eliminar play List</h4>
+            </div>
+            <div class="modal-body">
+                <p>Para eliminar la playList copie <span style="color: red;">{{namePlayListEliminar}}</span> en el siguiente campo:</p>
+                <input #campoEliminar [(ngModel)]="inputPlayListEliminar" type="text" class="form-control" name="" id="">
+                <br>
+                <div class="alert alert-danger">
+
+                    <i class="fa fa-ban-circle"></i><strong>Ey!! </strong> Al eliminar la PlayList <a href="#" class="alert-link">{{namePlayListEliminar}}</a>, se borrará toda la configuración de la misma.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button [disabled]="loading" (click)="campoEliminar.value=''" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button [disabled]="loading" (click)="eliminarPlayList()" type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

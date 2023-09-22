@@ -1,0 +1,211 @@
+<section class="hbox stretch" style="margin-top: 60px;">
+    <section>
+        <section class="vbox">
+            <section class="scrollable padder-lg w-f-md" id="bjax-target">
+
+                <h2 class="font-thin m-b">Usuarios
+                    <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                   
+                    </span>
+                </h2>
+                <div class="row row-sm">
+
+
+                    <!-- ////////////////////////// -->
+
+                    <section class="panel panel-default">
+                        <header class="panel-heading">
+                            Usuarios
+                        </header>
+                        <div class="row wrapper">
+                            <div class="col-sm-5 m-b-xs">
+                                <button class="btn btn-sm btn-default" (click)="actualizar = false;" data-toggle="modal" data-target="#myModal2"><i class="fa fa-plus"></i> Crear Usuario</button>
+                            </div>
+                            <div class="col-sm-4 m-b-xs">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label (click)="verUserActivosYDeshabilitados(true)" class="btn btn-sm btn-default active">
+                                         <input  type="radio" name="options"> Activos
+                                    </label>
+                                    <label (click)="verUserActivosYDeshabilitados(false)" class="btn btn-sm btn-default">
+                                       <input  type="radio" name="options"> Inhabilitados
+                                  </label>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+
+                                <input #teminoBusqueda (keyup.enter)="buscarUsuario(teminoBusqueda.value)" type="text" class="input-sm form-control" placeholder="Buscar usuario (enter)">
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover ">
+                                <thead>
+                                    <tr>
+                                        <th style="width:20px;">Img</th>
+                                        <th> Nombre de usuario</th>
+                                        <th>Email</th>
+                                        <th>Rol</th>
+                                        <th style="text-align: center;">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let u of usuarios">
+                                        <td>
+                                            <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm">
+                                                <img [src]="u.img | imagen:'users' " alt="img" class="img-" style="max-height: 42px !important; max-width: 42px !important;  ">
+                                            </span>
+                                        </td>
+                                        <td>{{u.userName |uppercase}}</td>
+                                        <td>{{u.email}}</td>
+                                        <td> <span *ngIf="u.role === 'SUPER_ROLE'">SUPER ADMINISTRADOR</span><span *ngIf="u.role === 'ADMIN_ROLE'"> ADMINISTRADOR</span><span *ngIf="u.role === 'USER_ROLE'">USUARIO</span> </td>
+                                        <td style="text-align: right;">
+                                            <div *ngIf="u.role !== 'SUPER_ROLE'">
+
+                                                <a href="javascript:;" (click)="cargarDataEnForm(u); " data-toggle="modal" data-target="#myModal2" title="Actualizar usuario" class="m-r-sm"><i class="fa icon-pencil"></i></a> &nbsp;
+                                                <a href="javascript:;" (dblclick)="inhabilitarYHabilitarUsuario(u._id);" title="Inhabilitar o habilitar usuario (doble click)" class="m-r-sm"><i class="fa fa-power-off text-danger text"></i></a>
+
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+
+
+                        </div>
+                        <footer class="panel-footer">
+
+                            <div class="row">
+                                <div class="col-sm-4 hidden-xs">
+                                    <span *ngIf="!buscadorUsuario && paginacion.paginaTotal > 1">
+                                        <select #numItem (change)="cambiarItem(numItem.value)" class="input-sm form-control input-s-sm inline v-middle">
+                                        <option value="">listar</option>
+                                        <option  value="20">20 Usuarios</option>
+                                        <option  value="50">50 Usuarios</option>
+                                        <option  value="100">100 Usuarios</option>
+                                        </select>
+                                    </span>
+                                </div>
+                                <div class="col-sm-4 text-center">
+                                    <small class="text-muted inline m-t-sm m-b-sm">Mostrando desde <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) < 1">1</span>  <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) > 0">{{(paginacion.items * paginacion.pagina) - paginacion.items }}</span> a    <span *ngIf="(paginacion.items * paginacion.pagina) >= paginacion.totalItems "> {{paginacion.totalItems}}</span>  <span *ngIf="(paginacion.items * paginacion.pagina) < paginacion.totalItems ">{{paginacion.items * paginacion.pagina}}</span>      de {{ paginacion.totalItems }} usuarios</small>
+                                </div>
+                                <div class="col-sm-4 text-right text-center-xs" *ngIf="!buscadorUsuario && paginacion.paginaTotal > 1">
+                                    <ul class="pagination pagination-sm m-t-none m-b-none">
+                                        <li [ngClass]="{'disabled': !btnAnt}">
+                                            <a href="javascript:;" (click)="paginaAnterior()"><i class="fa fa-chevron-left"></i> Anterior</a>
+                                        </li>
+
+                                        <li [ngClass]="{'disabled': !btnSig}">
+                                            <a href="javascript:;" (click)="paginaSiguiente() ">Siguiente <i class="fa fa-chevron-right "></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </footer>
+                    </section>
+
+                    <!-- /////////////////////// -->
+
+
+                </div>
+
+
+            </section>
+
+        </section>
+    </section>
+    <!-- side content -->
+    <aside class="aside-md bg-light dk" id="sidebar">
+        <section class="vbox animated fadeInRight">
+            <section class="w-f-md scrollable hover">
+                <h4 class="font-thin m-l-md m-t">Conectados</h4>
+                <ul class="list-group no-bg no-borders auto m-t-n-xxs">
+                    <li *ngFor="let u of usuariosEnLinea | async" class="list-group-item">
+                        <span class="pull-left thumb-xs m-t-xs avatar m-l-xs m-r-sm">
+                            <img [src]="u.img | imagen:'users' " alt="usuario conectado" class="img-"  style="max-height: 45px; max-width: 45px; padding: 0px;">
+
+                            <i class="on b-light right sm"></i>
+                        </span>
+                        <div class="clear">
+                            <div><a href="javascript:;">{{u.name}}</a></div>
+                            <span *ngIf="u.role === 'SUPER_ROLE'">SUPER ADMINISTRADOR</span><span *ngIf="u.role === 'ADMIN_ROLE'"> ADMINISTRADOR</span><span *ngIf="u.role === 'USER_ROLE'">USUARIO</span>
+
+                        </div>
+                    </li>
+
+
+                </ul>
+            </section>
+
+        </section>
+    </aside>
+    <!-- / side content -->
+</section>
+
+
+
+
+
+<!-- Modal Crear y Editar Usuario -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-small" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Crear Usuario</h4>
+            </div>
+            <div class="modal-body">
+
+                <!-- ////////////// -->
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+                        <form class="bs-example form-horizontal">
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Nombre</label>
+                                <div class="col-lg-10">
+                                    <input [(ngModel)]="dataUsuario.name" name="name" type="text" class="form-control" placeholder="Ingresa nombre de usuario">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Email</label>
+                                <div class="col-lg-10">
+                                    <input [(ngModel)]="dataUsuario.email" name="email" type="email" class="form-control" placeholder="Ingresa un Email">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Rol</label>
+                                <div class="col-lg-10">
+                                    <select [(ngModel)]="dataUsuario.role" name="role" id="" class="form-control">
+                                         <option value="USER_ROLE">Usuario</option>
+                                         <option value="ADMIN_ROLE">Administrador</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button *ngIf="!actualizar" (click)="crearUsuario();" class="btn btn-sm btn-success">Guardar</button>
+                                    <button *ngIf="actualizar" (click)="actualizarUsuario();" class="btn btn-sm btn-info">Actualizar</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <!-- /////////////////// -->
+            </div>
+
+        </div>
+    </div>
+</div>

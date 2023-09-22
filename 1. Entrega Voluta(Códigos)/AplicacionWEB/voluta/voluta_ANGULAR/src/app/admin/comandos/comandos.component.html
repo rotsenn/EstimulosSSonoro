@@ -1,0 +1,69 @@
+<section class="hbox stretch" style="margin-top: 60px;">
+    <aside class="aside-lg bg-light b-r" id="aside">
+
+        <div class="dropdown pull-left m-r" style="margin-bottom: 80px;">
+            <ul class="dropdown-menu pos-stc inline" role="menu">
+                <li><a tabindex="-1" href="javascript:;" (click)="comando('mpc play')">Play</a></li>
+                <li><a tabindex="-1" href="javascript:;" (click)="comando('mpc pause')">pausa</a></li>
+                <li><a tabindex="-1" href="javascript:;" (click)="comando('mpc stop')">stop</a></li>
+                <li><a tabindex="-1" href="javascript:;" (click)="comando('mpc next')">Siguiente</a></li>
+                <li><a tabindex="-1" href="javascript:;" (click)="comando('mpc prev')">Anterior</a></li>
+                <li class="divider"></li>
+            </ul>
+            <input #comandoManual (keyup.enter)="comando('mpc '+comandoManual.value)" type="text" name="" id="">
+        </div>
+
+
+        <div class="dropdown pull-left m-r">
+            <span style="font-weight: bold;">DISPOSITIVOS AZURE</span>
+            <ul class="dropdown-menu pos-stc inline" role="menu" style="margin-bottom: 50px;">
+                <li *ngFor="let d of dispositivos"><a tabindex="-1" href="javascript:;">{{d.displayName}} - {{d.id}}</a></li>
+            </ul>
+
+            <hr />
+
+            <input class="form-control" type="text" [(ngModel)]="id" name="id" id="" placeholder="id del dispositivo">
+            <input class="form-control" type="text" [(ngModel)]="displayName" name="displayName" placeholder="Nombre del dispositivo">
+            <button class="btn btn-success" (click)="crearDispositivo()">Crear dispositivo</button>
+
+        </div>
+
+    </aside>
+
+
+
+
+
+    <section class="vbox animated fadeInUp">
+        <section class="scrollable">
+            <header class="header bg-light dk">
+                <p>Canciones</p>
+            </header>
+
+
+            <pre lang="html4strict">
+                <label for="volumen">Volumen: </label>
+                  <input #re type="range" (change)="eventoVolumen(re.value)" min="0" max="100" value="1" step="1" id="volumen">
+                  <p>Volumen: {{re.value}} %</p>
+            </pre>
+
+
+
+
+            <h1>Respuesta azure</h1>
+            {{response}}
+
+            <span *ngIf="cargando">
+                Procesando
+                <i class="fa fa-refresh fa-spin "></i>
+            </span>
+
+
+
+        </section>
+    </section>
+
+
+
+
+</section>

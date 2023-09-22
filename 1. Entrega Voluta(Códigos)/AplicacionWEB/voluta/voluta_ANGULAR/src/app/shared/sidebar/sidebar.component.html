@@ -1,0 +1,126 @@
+<section class="">
+    <section class="w-f-md scrollable">
+        <div class=" " data-height="auto" data-distance="0" data-size="10px" data-railOpacity="0.2">
+
+            <nav class="nav-primary hidden-xs ">
+                <ul class="nav bg clearfix">
+                    <br><br><br>
+                    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">
+                        Menú de control
+                    </li>
+                    <!-- <li>
+                        <a href="javascript:;">
+                            <i class="icon-disc icon text-success"></i>
+                            <span class="font-bold">dashboard</span>
+                        </a>
+                    </li> -->
+
+                    <li routerLinkActive="active">
+                        <a routerLink="/admin/interface/dispositivos">
+                            <i class="icon-grid icon " style="color: rgb(31, 101, 167);"></i>
+                            <span class="font-bold">Dispositivos</span>
+                        </a>
+                    </li>
+
+                    <li routerLinkActive="active">
+                        <a routerLink="/admin/interface/playLists">
+                            <i class="icon-playlist icon text-warning-lter" style="color: rgb(31, 101, 167);"></i>
+                            <span class="font-bold">Play Lists</span>
+                        </a>
+                    </li>
+
+                    <!-- <li>
+                        <a href="javascript:;">
+                            <i class="icon-music-tone-alt icon text-info"></i>
+                            <span class="font-bold">Canciones</span>
+                        </a>
+                    </li> -->
+
+
+
+                    <li class="m-b hidden-nav-xs"></li>
+                </ul>
+                <ul class="nav" data-ride="collapse" *ngIf="role === 'ADMIN_ROLE' || role === 'SUPER_ROLE' ">
+                    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted">
+                        Administración
+                    </li>
+
+                    <li routerLinkActive="active">
+                        <a routerLink="/admin/dispositivos">
+                            <i class="icon-grid icon "></i>
+                            <span class="font-bold ">Dispositivos</span>
+                        </a>
+                    </li>
+
+                    <li routerLinkActive="active">
+                        <a routerLink="/admin/canciones">
+                            <i class=" icon-music-tone-alt icon "></i>
+                            <span>Canciones</span>
+                        </a>
+                    </li>
+
+
+
+                    <!-- <li routerLinkActive="active">
+                        <a routerLink="/admin/comandos">
+                            <i class=" icon-music-tone-alt icon "></i>
+                            <span>Comandos</span>
+                        </a>
+                    </li> -->
+
+                    <li routerLinkActive="active">
+                        <a routerLink="/admin/playLists">
+                            <i class="icon-playlist icon text-warning-lter"></i>
+                            <span class="font-bold ">Play Lists</span>
+                        </a>
+                    </li>
+
+                    <li routerLinkActive="active">
+                        <a routerLink="/admin/usuarios">
+                            <i class="icon-users icon"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                    <!-- <li>
+                        <a href="javascript:; ">
+                            <i class="icon-music-tone icon "></i>
+                            <span>Canciones</span>
+                        </a>
+                    </li> -->
+                </ul>
+
+                <!-- <ul class="nav text-sm ">
+                    <li class="hidden-nav-xs padder m-t m-b-sm text-xs text-muted ">
+                        <span class="pull-right "><a href="javascript:; "><i class="icon-plus i-lg "></i></a></span> Playlist
+                    </li>
+                    <li>
+                        <a href="javascript:; ">
+                            <i class="icon-music-tone icon "></i>
+                            <span>Hip-Pop</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:; ">
+                            <i class="icon-playlist icon text-success-lter "></i>
+                            <b class="badge bg-success dker pull-right ">9</b>
+                            <span>Jazz</span>
+                        </a>
+                    </li>
+                </ul> -->
+            </nav>
+
+        </div>
+    </section>
+
+
+
+    <footer class="footer hidden-xs no-padder text-center-nav-xs" style="bottom: 0; position: fixed; width: 100%;">
+        <div class="bg hidden-xs ">
+            <div class="dropdown dropup wrapper-sm clearfix" style="padding: 0%;">
+
+                <app-player style="bottom: 0; position: fixed; width: 10%;"></app-player>
+
+            </div>
+        </div>
+    </footer>
+</section>

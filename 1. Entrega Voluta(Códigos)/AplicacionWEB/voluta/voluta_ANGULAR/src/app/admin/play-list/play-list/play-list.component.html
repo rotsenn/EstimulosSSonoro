@@ -1,0 +1,295 @@
+<section class="vbox" style="margin-top: 59px;">
+    <section class="w-f-md">
+        <section class="hbox stretch bg-black dker">
+            <!-- side content -->
+
+
+            <!-- //////////////////////// -->
+            <aside class="col-sm-5 no-padder" id="sidebar">
+                <section class="vbox animated fadeInUp">
+                    <section class="scrollable">
+                        <div class="m-t-n-xxs item pos-rlt">
+                            <div class="bottom gd bg-info wrapper-lg">
+
+                                <span class="pull-right text-sm">{{playLis?.songs.length}} canciones <br>{{duracionPlayList | convertirSegundos}}</span>
+                                <span class="h2 font-thin">{{playLis?.name }} <br> <span style="font-size: 15px;">Sincronizar con los dispositivos -  - </span> </span>
+                                <a href="javascript:;" (click)="sincronizarConDispositivo();" class="m-r-sm">
+                                    <i *ngIf="!loading" id="refresh" class="icon-refresh i-lg inline"></i>
+                                    <i class="fa fa-spinner fa fa-spin fa fa-large" *ngIf="loading"></i>
+                                </a>
+
+                            </div>
+                            <div style="text-align: center;">
+                                <img [src]="playLis?.img | imagen: 'playListsIMG'" alt="Img-Playlist" class="r r-2x img-full" style="max-width: 250px;">
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-lg no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                            <li class="list-group-item clearfix">
+                                <!-- ///////////////////////  filtro autocomplete buscador canción de la playList  /////////////////////////////////////// -->
+
+                                <input #buscarCancionPlayList class="form-control " style="background-color: #0D1215; border: black; color: ghostwhite;" placeholder="Buscar canción de la play list" matInput aria-label="Playlist" [matAutocomplete]="auto" [formControl]="cancionesCtrl">
+                                <!-- <p *ngFor="let c of filtroCanciones | async">HOLA QUE TAL</p> -->
+                                <mat-autocomplete #auto="matAutocomplete">
+
+                                </mat-autocomplete>
+
+
+                                <!-- //////////////////////////////////////////////////////////////////// -->
+
+                            </li>
+
+                            <span *ngFor="let c of filtroCanciones | async">
+                            <li class="list-group-item " *ngIf="buscarCancionPlayList.value !== ''" >
+                              
+                                <!--//*ngFor="let c of playLis?.songs" -->
+                                <span *ngIf="c.song.name">
+                                    <div class="pull-right m-l" >
+                                         <a href="javascript:;" (dblclick)="quitarCancionPlayList(c.song._id)"><i class="icon-close"></i></a>
+                                    </div>
+                                    <a href="javascript:;"  (click)="reproducirCancion(c.song)" class="jp-play-me m-r-sm pull-left">
+                                        <i class="icon-control-play "></i>
+                                        <i style="color: rgb(0, 198, 212);" class="icon-control-pause "></i>
+                                        <span *ngIf="c.song.rp" class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                                            <span class="bar1 a1 bg-primary lter"></span>
+                            <span class="bar2 a2 bg-info lt"></span>
+                            <span class="bar3 a3 bg-success"></span>
+                            <span class="bar4 a4 bg-warning dk"></span>
+                            <span class="bar5 a5 bg-danger dker"></span>
+                            </span>
+                            </a>
+                            <div class="clear text-ellipsis">
+                                <span>{{c.song.name |uppercase}}</span>
+                                <span class="text-muted"> || {{c.song.duration | convertirSegundos}}</span>
+                                <span class="text-muted"> *  {{c.song.description | lowercase}}</span>
+                            </div>
+                            </span>
+
+                            </li>
+                            </span>
+
+
+                            <span *ngIf="buscarCancionPlayList.value === ''">
+                            <li class="list-group-item " *ngFor="let c of playLis?.songs" >
+
+                                <span *ngIf="c.song.name">
+                                <div class="pull-right m-l" >
+                                    <a href="javascript:;" (dblclick)="quitarCancionPlayList(c.song._id)"><i class="icon-close"></i></a>
+                                </div>
+                                <a href="javascript:;"  (click)="reproducirCancion(c.song)" class="jp-play-me m-r-sm pull-left">
+                                    <i *ngIf="!c.song.rp" class="icon-control-play text"></i>
+                                    <i *ngIf="c.song.rp" style="color: rgb(0, 198, 212);" class="icon-control-pause "></i>
+                                    <span  *ngIf="c.song.rp" class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                                        <span class="bar1 a1 bg-primary lter"></span>
+                            <span class="bar2 a2 bg-info lt"></span>
+                            <span class="bar3 a3 bg-success"></span>
+                            <span class="bar4 a4 bg-warning dk"></span>
+                            <span class="bar5 a5 bg-danger dker"></span>
+                            </span>
+                            </a>
+                            <div class="clear text-ellipsis">
+                                <span>{{c.song.name |uppercase}}</span>
+                                <span class="text-muted"> || {{c.song.duration | convertirSegundos}}</span>
+                                <span class="text-muted"> *  {{c.song.description | lowercase}}</span>
+                            </div>
+                            </span>
+                            </li>
+                            </span>
+                        </ul>
+                    </section>
+                </section>
+            </aside>
+            <!-- / side content -->
+
+        </section>
+    </section>
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="vbox" style="margin-top: 0px;">
+    <section>
+        <section class="hbox stretch">
+            <!-- .aside -->
+
+            <!-- /.aside -->
+            <section id="content">
+                <section class="vbox">
+                    <section class="w-f-md">
+                        <section class="hbox stretch  dker">
+
+                            <!-- side content -->
+                            <aside class="col-sm-5 no-padder" id="sidebar">
+                                <section class="vbox animated fadeInUp">
+
+                                    <div class="col-lg-5" style="margin-top: 10px;">
+                                        <div class="col-md-12" style="margin-top: 80px;">
+                                            <section class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="clearfix text-center m-t">
+                                                        <div class="inline">
+                                                            <div class="easypiechart easyPieChart" data-percent="75" data-line-width="5" data-bar-color="#4cc0c1" data-track-color="#f5f5f5" data-scale-color="false" data-size="134" data-line-cap="butt" data-animate="1000" style="width: 134px; height: 134px; line-height: 134px;">
+                                                                <div class="thumb-lg">
+                                                                    <img [src]="playLis?.img | imagen: 'playListsIMG'" class="img-circle" alt="PlayList-IMG">
+                                                                </div>
+                                                                <canvas width="134" height="134"></canvas></div>
+                                                            <div class="h4 m-t m-b-xs">{{playLis?.name}}</div>
+                                                            <div class="text-muted m-b">{{playLis?.type}}</div>
+                                                            <small class="text-muted m-b">{{playLis?.description}}</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <footer class="panel-footer bg-info text-center">
+
+                                                    <p id="social-buttons">
+                                                        <a href="javascript:;" (click)="cargarM3UPlayList();" class="btn btn-rounded btn-sm btn-dark"><i class="icon-reload"></i> Sincronizar </a> &nbsp;&nbsp;
+                                                        <a href="javascript:;" (click)="reproducir();" class="btn btn-rounded btn-sm btn-primary hoverColor"><i class="icon-control-play"></i> Reproducir</a> &nbsp;&nbsp;
+                                                        <a href="http://68.183.142.245/api/v1/upload/playLists/{{playLis?._id}}.m3u" class="btn btn-rounded btn-sm btn-danger"><i class="icon-cloud-download"></i> Descargar</a> &nbsp;&nbsp;
+                                                        <a href="javascript:;" (click)="addSong = true;" class="btn btn-rounded btn-sm btn-dark"><i class="icon-cloud-upload"></i> Añadir canción </a> &nbsp;&nbsp;
+                                                    </p>
+
+                                                </footer>
+                                            </section>
+
+
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <section class="scrollable">
+
+                                                <ul class="list-group list-group-lg no-radius no-border  m-t-n-xxs  auto">
+                                                    <li *ngFor="let c of playLis?.songs" class="list-group-item">
+
+                                                        <div class="pull-right m-l">
+                                                            <a href="javascript:;" title="Eliminar de la playList"><i class="fa fa-trash-o"></i></a>
+                                                        </div>
+                                                        <a href="javascript:;" (click)="startPlayer(c.song)" class="jp-play-me m-r-sm pull-left hoverColor">
+                                                            <i class="icon-control-play text"></i>
+                                                            <i class="icon-control-pause text-active"></i>
+                                                        </a>
+                                                        <div class="clear text-ellipsis">
+                                                            <span>{{ c.song.name }}</span>
+                                                            <span class="text-muted"> -- {{c.song.duration}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                            <span class="text-muted">  {{c.song.description}}</span>
+                                                        </div>
+
+                                                    </li>
+
+                                                </ul>
+
+
+                                            </section>
+                                        </div>
+
+                                    </div>
+
+
+
+                                    <div *ngIf="addSong" class="col-lg-7" style="margin-top: 93px;">
+
+
+
+                                        <section>
+                                            <section class="scrollable">
+                                                <header class="header bg-light dk">
+                                                    <br>
+                                                    <div class="input-group m-b">
+                                                        <span class="input-group-btn">
+                                                          <button class="btn btn-default" type="button">Buscar!</button>
+                                                        </span>
+                                                        <input type="text" class="form-control">
+                                                    </div>
+                                                    <br>
+                                                </header>
+
+
+                                                <!-- /.aside -->
+
+                                                <!-- side content -->
+
+                                                <section class="animated fadeInUp">
+                                                    <section class="scrollable">
+
+                                                        <ul class="list-group list-group-lg no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                                                            <li *ngFor="let c of canciones" class="list-group-item">
+                                                                <div class="pull-right m-l">
+                                                                    <a href="javascript:;" (click)="cancionAddPlayList(c._id); " data-toggle="modal" data-target="#myModal"><i class="icon-cloud-upload"></i></a>
+                                                                </div>
+                                                                <a href="javascript:;" (click)="startPlayer(c)" class="jp-play-me m-r-sm pull-left">
+                                                                    <i class="icon-control-play text"></i>
+                                                                    <i class="icon-control-pause text-active"></i>
+                                                                </a>
+                                                                <div class="clear text-ellipsis">
+                                                                    <span [ngClass]="{'rojo': c.file === null}">{{ c.name }}</span>
+                                                                    <span [ngClass]="{'rojo': c.file === null}" class="text-muted"> -- {{c.duration}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                    <span class="text-muted">  {{c.description}}</span>
+                                                                </div>
+                                                            </li>
+
+                                                        </ul>
+
+                                                        <footer class="panel-footer">
+                                                            <div class="row">
+                                                                <div class="col-sm-4 hidden-xs">
+                                                                    <select class="input-sm form-control input-s-sm inline v-middle">
+                                                                                                  <option value="0">listar</option>
+                                                                                                  <option value="20">20 canciones</option>
+                                                                                                  <option value="50">50 canciones</option>
+                                                                                                  <option value="100">100 canciones</option>
+                                                                                                </select>
+                                                                    <button class="btn btn-sm btn-default">Aplicar</button>
+                                                                </div>
+                                                                <div class="col-sm-4 text-center">
+                                                                    <small class="text-muted inline m-t-sm m-b-sm">Mostrando de 1 a 12 de 50 canciones</small>
+                                                                </div>
+                                                                <div class="col-sm-4 text-right text-center-xs">
+                                                                    <ul class="pagination pagination-sm m-t-none m-b-none">
+                                                                        <li><a href="javascript:;"><i class="fa fa-chevron-left"></i> Anterior</a></li>
+
+                                                                        <li><a href="javascript:;">Siguiente<i class="fa fa-chevron-right"></i></a></li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </footer>
+
+                                                    </section>
+
+                                                </section>
+
+                                                <!-- / side content -->
+
+                                            </section>
+
+                                        </section>
+
+
+
+
+                                    </div>
+
+
+
+                                </section>
+                            </aside>
+                            <!-- / side content -->
+
+                        </section>
+                    </section>
+
+                </section>
+
+            </section>
+        </section>
+    </section>
+
+</section>

@@ -1,0 +1,68 @@
+<section class="" id="" style="margin-top: 40px;  overflow: scroll; overflow-x:hidden;height:900px;; padding: 10px; ">
+    <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin"><i class="icon-refresh i-lg  inline" id="refresh"></i></a>
+    <h2 class="font-thin m-b">Listas de reproducción </h2>
+    <div class="row row-sm">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-lg-4" style="margin-bottom: 10px;">
+                <input #terminoBuscar (keyup.enter)="buscarPlayList(terminoBuscar.value)" type="text" name="" id="" class="form-control" style="background-color: #F2F4F8; " placeholder="Buscar playList  (Enter)">
+            </div>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2" *ngFor="let p of playLists">
+            <div class="item">
+                <div class="pos-rlt">
+                    <div class="bottom">
+                        <!-- <span class="badge bg-info m-l-sm m-b-sm">03:20</span>  -->
+                    </div>
+                    <div class="item-overlay opacity r r-2x bg-black">
+
+                        <div class="center text-center m-t-n">
+                            <a href="javascript:;" (click)="detallePlayList(p._id)"><i class="icon-arrow-right i-2x"></i></a>
+                        </div>
+
+                    </div>
+                    <div class="top">
+                        <span class="pull-right m-t-sm m-r-sm badge bg-info">{{p.songs.length}}</span>
+
+                    </div>
+                    <img [src]="p.img | imagen: 'playListsIMG'" alt="Img-Playlist" class="r r-2x img-full">
+                </div>
+                <div class="padder-v">
+                    <a href="#" class="text-ellipsis">{{p.name}}</a>
+                    <a href="#" class="text-ellipsis text-xs text-muted">{{p.type}}</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br><br>
+
+    <footer class="panel-footer" style="background-color: #0D1215; position: fixed; width: 100%;  bottom: 0; margin-left: -8px;  margin-right: -8px; border-left: 1px solid #444;">
+        <div class="row">
+            <div class="col-sm-4 hidden-xs">
+
+                <span *ngIf="!buscadorPlayList && paginacion.paginaTotal > 1">
+                        <select class="input-sm form-control input-s-sm inline v-middle">
+                            <option value="0">Mostrar</option>
+                            <option value="20">20 palyList</option>
+                            <option value="50">50 playLists</option>
+                            <option value="100">100 playLists</option>
+                    </select>
+                </span>
+
+            </div>
+            <div class="col-sm-3 text-center">
+                <small class="text-muted inline m-t-sm m-b-sm">Mostrando desde <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) < 1">1</span>  <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) > 0">{{(paginacion.items * paginacion.pagina) - paginacion.items }}</span> a    <span *ngIf="(paginacion.items * paginacion.pagina) >= paginacion.totalItems "> {{paginacion.totalItems}}</span>  <span *ngIf="(paginacion.items * paginacion.pagina) < paginacion.totalItems ">{{paginacion.items * paginacion.pagina}}</span>      de {{ paginacion.totalItems }} Listas de reproducción</small>
+            </div>
+            <div class="col-sm-3 text-right text-center-xs">
+                <ul *ngIf="!buscadorPlayList && paginacion.paginaTotal > 1" class="pagination pagination-sm m-t-none m-b-none">
+                    <li [ngClass]="{'disabled': !btnAnt}"><a (click)="paginaAnterior();" href="javascript:;"><i class="fa fa-chevron-left"></i> Anterior</a></li>
+
+                    <li [ngClass]="{'disabled': !btnSig}"><a (click)="paginaSiguiente();" href="javascript:;">Siguiente<i class="fa fa-chevron-right"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <br><br><br><br><br><br><br><br><br>
+
+</section>

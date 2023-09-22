@@ -1,0 +1,186 @@
+<section class="hbox stretch" style="margin-top: 60px;">
+
+
+    <aside class="aside-lg bg-light b-r" id="aside">
+        <div class="wrapper" *ngIf="nuevoDispositivo || editarDispositivo">
+            <h4 class="m-t-none" *ngIf="nuevoDispositivo">Crear dispositivo</h4>
+            <h4 class="m-t-none" *ngIf="editarDispositivo">Editar dispositivo</h4>
+            <form [formGroup]="dispositivoFormGroup">
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input formControlName="name" name="name" type="text" placeholder="Nombre" class="input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Identificador</label>
+                    <input formControlName="identifier" name="identifier" type="text" placeholder="Identificador del dispositivo en azure" class="datepicker input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Ubicación del dispositivo </label>
+                    <input formControlName="location" name="location" type="text" placeholder="Ubicación del dispositivo" class="datepicker input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <!-- <input formControlName="description" name="description" type="text" placeholder="Duracion de la canción" class="datepicker input-sm form-control"> -->
+                    <textarea id="" formControlName="description" name="description" class="form-control" cols="3" rows="3" placeholder="Ingresa una descripción"></textarea>
+                </div>
+
+                <div class="alert alert-danger" *ngIf="msgError !== ''">
+                    <i class="fa fa-ban-circle"></i><strong>Alerta !</strong> <a href="javascript:;" class="alert-link"> {{msgError}}</a>
+                </div>
+                <div class="alert alert-success" *ngIf="msgExito !== ''">
+
+                    <i class="fa fa-ban-circle"></i><strong>Exito !</strong> <a href="javascript:;" class="alert-link"> {{msgExito}}</a>
+                </div>
+
+            </form>
+        </div>
+
+
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="nuevoDispositivo"><button (click)="crearDispositivo()" class="btn btn-sm btn-default" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>    Crear dispositivo</button></div>
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="editarDispositivo"><button (click)="editarDispositivoDb()" class="btn btn-sm btn-info" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>   Editar dispositivo</button> -||- <button (click)="cancelarEdicion()"
+                class="btn btn-sm btn-danger"> <i class="fa fa-times"></i> Cancelar</button>
+        </div>
+
+
+        <div class="wrapper" *ngIf="!nuevoDispositivo && !editarDispositivo">
+            <div class="panel wrapper">
+                <div class="row text-center">
+                    <span style="color: blue">{{playList?.title}}   </span>
+                    <div class="col-xs-12">
+                        <a href="javascript:;">
+                            <span class="m-b-xs h4 block">{{paginacion?.totalItems}}</span>
+                            <small class="text-muted">Dispositivos</small>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group btn-group-justified m-b">
+                <a *ngIf="!nuevoDispositivo" (click)="nuevoDispositivo = true" href="javascript:;" class="btn btn-s-md btn-success btn-rounded">Crear dispositivo</a>
+            </div>
+        </div>
+    </aside>
+
+
+
+    <section class="vbox animated fadeInUp">
+        <section class="scrollable">
+
+            <section class="vbox" style="margin-top: 0px;">
+                <section>
+                    <section class="hbox stretch">
+                        <!-- .aside -->
+
+                        <!-- /.aside -->
+                        <section id="content">
+                            <section class="vbox">
+                                <section class="w-f-md">
+                                    <section class="hbox stretch bg-black  dker">
+                                        <!-- side content -->
+                                        <aside class="col-sm-5 no-padder" id="sidebar">
+                                            <section class="vbox animated fadeInUp">
+                                                <section class="scrollable" style="padding: 15px;">
+                                                    <input #teminoBusqueda (keyup.enter)="buscarDispositivo(teminoBusqueda.value)" type="text" class="form-control" style="background-color: #232C32; border:none; color:silver;" placeholder="Buscar dispositivo.  (enter)">
+                                                    <br>
+                                                    <ul class="list-group list-group-lg no-radius no-border  m-t-n-xxs  auto">
+                                                        <li *ngFor="let d of dispositivos" class="list-group-item c-color">
+                                                            <a href="javascript:;" class="pull-left thumb-sm m-r">
+                                                                <img src="assets/images/rasp.jpeg" style="max-height: 30px; padding: 0px;">
+                                                            </a>
+                                                            <div class="pull-right m-l">
+                                                                <a href="javascript:;" title="Actualizar dispositivo" (click)="actualizarDispositivoForm(d._id)" class="m-r-sm"><i class="fa icon-pencil"></i></a>
+                                                                <a href="javascript:;" (click)="dispositivoEliminarId = d._id  ;nameDispositivoEliminar = d.name; campoEliminar.value = '' " data-toggle="modal" data-target="#myModalE" title="Eliminar dispositivo" class="m-r-sm"><i class="fa fa-trash-o"></i></a>
+                                                                <!-- <a href="/#/admin/dispositivo/{{d._id}}" target="_blank" title="Ver dispositivo" data-toggle="modal"><i class="icon-eye"></i></a> -->
+                                                            </div>
+
+                                                            <div class="clear text-ellipsis">
+                                                                <span style="font-weight: bold;">{{ d.name }} ({{d.identifier}})</span>
+                                                                <span class="text-muted" style="color:burlywood;"> - &nbsp;&nbsp;&nbsp; {{d.description}}</span> &nbsp;&nbsp;&nbsp;
+                                                                <span class="text-muted"> -  {{d.location}}</span>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+
+                                                    <footer class="panel-footer" style="background-color: #0D1215;">
+                                                        <div class="row">
+
+                                                            <div class="col-sm-4 hidden-xs">
+                                                                <span *ngIf="!buscadorDispositivo && paginacion.paginaTotal > 1">
+                                                                    <select #numItem (change)="cambiarItem(numItem.value)" class="input-sm form-control input-s-sm inline v-middle">
+                                                                        <option value="">listar</option>
+                                                                        <option  value="20">20 Dispositivos</option>
+                                                                        <option  value="50">50 Dispositivos</option>
+                                                                        <option  value="100">100 Dispositivos</option>
+                                                                    </select>
+                                                                
+                                                               
+                                                            </span>
+                                                            </div>
+                                                            <div class="col-sm-4 text-center">
+                                                                <small class="text-muted inline m-t-sm m-b-sm">Mostrando desde <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) < 1">1</span>  <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) > 0">{{(paginacion.items * paginacion.pagina) - paginacion.items }}</span> a    <span *ngIf="(paginacion.items * paginacion.pagina) >= paginacion.totalItems "> {{paginacion.totalItems}}</span>  <span *ngIf="(paginacion.items * paginacion.pagina) < paginacion.totalItems ">{{paginacion.items * paginacion.pagina}}</span>      de {{ paginacion.totalItems }} dispositivos</small>
+                                                            </div>
+                                                            <div *ngIf="!buscadorDispositivo && paginacion.paginaTotal > 1" class="col-sm-4 text-right text-center-xs">
+                                                                <ul class="pagination pagination-sm m-t-none m-b-none">
+                                                                    <li [ngClass]="{'disabled': !btnAnt}">
+                                                                        <a href="javascript:;" (click)="paginaAnterior()"><i class="fa fa-chevron-left"></i> Anterior</a>
+                                                                    </li>
+
+                                                                    <li [ngClass]="{'disabled': !btnSig}">
+                                                                        <a href="javascript:;" (click)="paginaSiguiente() ">Siguiente <i class="fa fa-chevron-right "></i></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </footer>
+
+                                                </section>
+
+                                            </section>
+                                        </aside>
+                                        <!-- / side content -->
+
+                                    </section>
+                                </section>
+
+                            </section>
+
+                        </section>
+                    </section>
+                </section>
+
+            </section>
+
+
+        </section>
+    </section>
+
+</section>
+
+
+<!-- Modal Eliminar PlayList -->
+<div class="modal fade" id="myModalE" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-small" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title " id="myModalLabel ">Eliminar Dispositivo</h4>
+            </div>
+            <div class="modal-body ">
+                <p>Para eliminar el dispositivo copie <span style="color: red; ">{{nameDispositivoEliminar}}</span> en el siguiente campo:</p>
+                <input #campoEliminar [(ngModel)]="inputDispositivoEliminar " type="text " class="form-control " name=" " id=" ">
+                <br>
+                <div class="alert alert-danger ">
+
+                    <i class="fa fa-ban-circle "></i><strong>Ey!! </strong> Al eliminar el dispositivo <a href="# " class="alert-link ">{{nameDispositivoEliminar}}</a>, se borrará toda la configuración del mismo.
+                </div>
+            </div>
+            <div class="modal-footer ">
+                <button (click)="campoEliminar.value='' " type="button " class="btn btn-default " data-dismiss="modal ">Cancelar</button>
+                <button (click)="eliminarDispositivo() " type="button " class="btn btn-danger ">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

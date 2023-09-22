@@ -1,0 +1,76 @@
+<section class="scrollable padder">
+    <div class="m-b-md">
+
+
+
+
+        <div class="row" style="margin-top: 80px;">
+            <div class="col-sm-4">
+                <section class="panel panel-default">
+                    <header class="panel-heading bg-light no-border">
+                        <div class="clearfix">
+                            <a href="javascript:;" (click)="imagenInput.click()" class="pull-left thumb-md avatar b-3x m-r">
+                                <img *ngIf="!imagenTemp" [src]="img | imagen: 'users'" alt="imagen Usuario" style="max-height: 55px; max-width: 55px; padding: 0px;">
+                                <img *ngIf="imagenTemp" [src]="imagenTemp" alt="imagen Usuario" style="max-height: 55px; max-width: 55px; padding: 0px;">
+
+                            </a>
+                            <div class="clear">
+                                <div class="h3 m-t-xs m-b-xs">
+                                    {{nombre}}
+                                    <i class="fa icon-pencil mano pull-right text-xs m-t-sm" (click)="nombreActualizar = ''" data-toggle="modal" data-target=".bs-example-modal-sm"></i>
+                                </div>
+                                <small class="text-muted"><span *ngIf="rol === 'SUPER_ROLE'">SUPER ADMINISTRADOR</span><span *ngIf="rol === 'ADMIN_ROLE'"> ADMINISTRADOR</span><span *ngIf="rol === 'USER_ROLE'">USUARIO</span></small>
+                            </div>
+                        </div>
+                    </header>
+
+                </section>
+
+            </div>
+        </div>
+        <input #imagenInput type="file" (change)="cambiarImagenUsuario($event.target )" name="" id="" style="display: none;">
+
+        <div class="row" style="margin-top: 10px;">
+            <div class="col-sm-4">
+                <section class="panel panel-default">
+                    <header class="panel-heading font-bold">Cambiar contraseña</header>
+                    <div class="panel-body">
+                        <form role="form">
+                            <div class="form-group">
+                                <label>Contraseña actual</label>
+                                <input [(ngModel)]="dataCambiPass.passActual" name="passActual" type="password" class="form-control" placeholder="Ingrese su contraseña actual">
+                            </div>
+                            <div class="form-group">
+                                <label>Nueva contraseña</label>
+                                <input [(ngModel)]="dataCambiPass.passNuevo" name="passActual" type="password" class="form-control" placeholder="Ingrese la nueva contraseña">
+                            </div>
+                            <div class="form-group">
+                                <label>Repetir contraseña</label>
+                                <input [(ngModel)]="dataCambiPass.passValidacion" name="passActual" type="password" class="form-control" placeholder="Repita la contraseña">
+                            </div>
+
+                            <button (click)="cambiarPassword();" type="submit" class="btn btn-sm btn-success">Cambiar contraseña</button>
+                        </form>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content" style="padding: 40px;">
+            <p style="color: black;">Actualizar Nombre de usuario</p>
+            <br>
+            <input [(ngModel)]="nombreActualizar" type="text" name="nombreActualizar" id="" placeholder="Ingrese un nombre de usuario" class="form-control">
+            <br>
+            <button (click)="actualizarNombre();" class="btn btn-success">Actualizar</button>
+        </div>
+    </div>
+</div>

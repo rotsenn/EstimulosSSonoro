@@ -1,0 +1,29 @@
+<section class="hbox stretch" style="padding-top: 60px;">
+    <section>
+        <section class="vbox">
+            <div class="col-md-2" *ngFor="let d of dispositivos" style="margin-top: 20px;">
+                <div class="post-item" style="cursor:pointer;" name="">
+                    <div class="post-media">
+                        <img src="assets/images/device.png" class="img-full">
+                    </div>
+                    <div class="caption wrapper-lg">
+                        <h2 class="post-title" style="font-size: 22px !important;"><a href="#">{{d.displayName}}</a></h2>
+                        <div class="post-sum">
+                            <p><span style="font-weight: bold;">Estado: </span> <label class="label bg-success m-l-xs">Activo</label> </p>
+
+                            <p><span style="font-weight: bold;"> Ubicación: </span> {{d.location}} </p>
+                            <p> <span style="font-weight: bold;"> Reproducción actual: </span><br> <i class="icon-playlist"></i> Quinta Sinfonía de Beethoven </p>
+                        </div>
+                        <div class="line line-lg"></div>
+                        <div class="text-muted">
+                            <!-- <i class="fa fa-user icon-muted"></i> by <a href="#" class="m-r-sm">Admin</a>
+                            <i class="fa fa-clock-o icon-muted"></i> Feb 20, 2013
+                            <a href="#" class="m-l-sm"><i class="fa fa-comment-o icon-muted"></i> 2 comments</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+    </section>

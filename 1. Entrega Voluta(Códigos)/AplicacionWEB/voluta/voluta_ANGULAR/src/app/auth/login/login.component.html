@@ -1,0 +1,86 @@
+<div id="content" class="animated fadeInUp bg-success dker" style="height: 100vh !important;" *ngIf="logueo">
+    <div class="container aside-xl">
+        <br> <br><br>
+        <div style="">
+            <img src="assets/images/volutaLogo.png" alt="" class="img img-responsive" style="max-width: 150px; margin-left: auto;  margin-right: auto; display: block;">
+        </div>
+        <!-- <a class="navbar-brand block" href="index.html"><span class="h1 font-bold">VOLUTA</span>
+            <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                <span class="bar1 a1 bg-primary lter"></span>
+                <span class="bar2 a2 bg-info lt"></span>
+                <span class="bar3 a3 bg-success"></span>
+                <span class="bar4 a4 bg-warning dk"></span>
+                <span class="bar5 a5 bg-danger dker"></span>
+                </span>
+        </a> -->
+
+        <section class="m-b-lg">
+            <header class="wrapper text-center">
+                <strong>Iniciar sesión</strong>
+            </header>
+            <form action="index.html">
+                <div class="form-group">
+                    <input type="email" [(ngModel)]="email" name="email" placeholder="Email" class="form-control rounded input-lg text-center no-border">
+                    <input [(ngModel)]="val" name="val" type="hidden" class="form-control underline-input">
+                </div>
+                <div class="form-group">
+                    <input type="password" [(ngModel)]="password" name="password" placeholder="Password" class="form-control rounded input-lg text-center no-border">
+                </div>
+                <button (click)='login();' type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Iniciar sesión</span></button>
+                <div class="text-center m-t m-b"><a href="javascript:;" (click)="logueo = false"><small>¿Olvidaste tú contraseña?</small></a></div>
+                <div class="line line-dashed"></div>
+                <div *ngIf="error" class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span> {{ msgError }}
+                </div>
+                <!-- <p class="text-muted text-center"><small>Do not have an account?</small></p> -->
+                <!-- <a href="signup.html" class="btn btn-lg btn-info btn-block rounded">Create an account</a> -->
+            </form>
+        </section>
+
+    </div>
+</div>
+
+
+
+<div id="content" class="animated fadeInUp bg-info  dker" style="height: 100vh !important;" *ngIf="!logueo">
+    <div class="container aside-xl">
+        <br> <br><br>
+        <div style="">
+            <img src="assets/images/volutaLogo.png" alt="" class="img img-responsive" style="max-width: 150px; margin-left: auto;  margin-right: auto; display: block;">
+        </div>
+        <!-- <a class="navbar-brand block" href="index.html"><span class="h1 font-bold">VOLUTA</span>
+            <span class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                <span class="bar1 a1 bg-primary lter"></span>
+                <span class="bar2 a2 bg-info lt"></span>
+                <span class="bar3 a3 bg-success"></span>
+                <span class="bar4 a4 bg-warning dk"></span>
+                <span class="bar5 a5 bg-danger dker"></span>
+                </span>
+        </a> -->
+
+        <section class="m-b-lg">
+            <header class="wrapper text-center">
+                <span style="font-size: 20px !important;">Recuperar contraseña</span>
+            </header>
+            <form action="index.html">
+                <div class="form-group">
+                    <input type="email" [(ngModel)]="emailRc" name="emailRc" placeholder="Ingrese su Email" class="form-control rounded input-lg text-center no-border">
+                    <input [(ngModel)]="valRc" name="valRc" type="hidden" class="form-control underline-input">
+                </div>
+
+                <button (click)='RecuperarPass();' type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">Recuperar contaseña</span></button>
+                <div class="text-center m-t m-b"><a href="javascript:;" (click)="logueo = true"><span style="color:white">Login</span></a></div>
+                <div class="line line-dashed"></div>
+                <div *ngIf="error" class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Error:</span> {{ msgError }}
+                </div>
+                <!-- <p class="text-muted text-center"><small>Do not have an account?</small></p> -->
+                <!-- <a href="signup.html" class="btn btn-lg btn-info btn-block rounded">Create an account</a> -->
+            </form>
+
+        </section>
+
+    </div>
+</div>

@@ -1,0 +1,189 @@
+<section class="vbox" style="margin-top: 59px;">
+    <section class="w-f-md">
+        <section class="hbox stretch bg-black dker">
+            <!-- side content -->
+
+
+            <!-- //////////////////////// -->
+            <aside class="col-sm-5 no-padder" id="sidebar">
+                <section class="vbox animated fadeInUp">
+                    <section class="scrollable">
+                        <div class="m-t-n-xxs item pos-rlt">
+
+                            <div class="bottom gd bg-info wrapper-lg">
+
+                                <span class="pull-right text-sm">{{playLis?.songs.length}} canciones <br>{{duracionPlayList | convertirSegundos}}</span>
+                                <span class="h2 font-thin">{{playLis?.name}} </span>
+                                <a href="{{base_url_do}}/v1/upload/playLists/{{playLis?._id}}.m3u" class="m-r-sm"><i class="icon-cloud-download"></i></a>
+
+                            </div>
+                            <div style="text-align: center;">
+                                <img [src]="playLis?.img | imagen: 'playListsIMG'" alt="Img-Playlist" class="r r-2x img-full" style="max-width: 250px;">
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-lg no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                            <li class="list-group-item clearfix">
+                                <!-- ///////////////////////  filtro autocomplete buscador canción de la playList  /////////////////////////////////////// -->
+
+                                <input #buscarCancionPlayList class="form-control " style="background-color: #0D1215; border: black; color: ghostwhite;" placeholder="Buscar canción de la play list" matInput aria-label="Playlist" [matAutocomplete]="auto" [formControl]="cancionesCtrl">
+                                <!-- <p *ngFor="let c of filtroCanciones | async">HOLA QUE TAL</p> -->
+                                <mat-autocomplete #auto="matAutocomplete">
+
+                                </mat-autocomplete>
+
+
+                                <!-- //////////////////////////////////////////////////////////////////// -->
+
+                            </li>
+
+                            <span *ngFor="let c of filtroCanciones | async">
+                            <li class="list-group-item " *ngIf="buscarCancionPlayList.value !== ''" >
+                              
+                                <!--//*ngFor="let c of playLis?.songs" -->
+                                <span *ngIf="c.song.name">
+                                    <div class="pull-right m-l" >
+                                        <a href="javascript:;" (dblclick)="quitarCancionPlayList(c.song._id)"><i class="icon-close"></i></a>
+                                    </div>
+                                    <a href="javascript:;"  (click)="reproducirCancion(c.song, 'pl')" class="jp-play-me m-r-sm pull-left">
+                                        <i *ngIf="!c.song.rp" class="icon-control-play text"></i>
+                                        <i *ngIf="c.song.rp" style="color: rgb(0, 198, 212);" class="icon-control-pause text"></i>
+                                        <span *ngIf="c.song.rp" class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                                            <span class="bar1 a1 bg-primary lter"></span>
+                            <span class="bar2 a2 bg-info lt"></span>
+                            <span class="bar3 a3 bg-success"></span>
+                            <span class="bar4 a4 bg-warning dk"></span>
+                            <span class="bar5 a5 bg-danger dker"></span>
+                            </span>
+                            </a>
+                            <div class="clear text-ellipsis">
+                                <span>{{c.song.name |uppercase}}</span>
+                                <span class="text-muted"> || {{c.song.duration | convertirSegundos}}</span>
+                                <span class="text-muted"> *  {{c.song.description | lowercase}}</span>
+                            </div>
+                            </span>
+
+                            </li>
+                            </span>
+
+
+                            <span *ngIf="buscarCancionPlayList.value === ''">
+                            <li class="list-group-item " *ngFor="let c of playLis?.songs" >
+
+                                <span *ngIf="c.song.name">
+                                <div class="pull-right m-l" >
+                                    <a href="javascript:;" (dblclick)="quitarCancionPlayList(c.song._id)"><i class="icon-close"></i></a>
+                                </div>
+                                <a href="javascript:;"  (click)="reproducirCancion(c.song, 'pl')" class="jp-play-me m-r-sm pull-left">
+                                    <i *ngIf="!c.song.rp" class="icon-control-play text"></i>
+                                   <i *ngIf="c.song.rp" style="color: rgb(0, 198, 212);" class="icon-control-pause text"></i>
+                                   <span *ngIf="c.song.rp" class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                                    <span class="bar1 a1 bg-primary lter"></span>
+                            <span class="bar2 a2 bg-info lt"></span>
+                            <span class="bar3 a3 bg-success"></span>
+                            <span class="bar4 a4 bg-warning dk"></span>
+                            <span class="bar5 a5 bg-danger dker"></span>
+                            </span>
+                            </a>
+                            <div class="clear text-ellipsis">
+                                <span>{{c.song.name |uppercase}}</span>
+                                <span class="text-muted"> || {{c.song.duration | convertirSegundos}}</span>
+                                <span class="text-muted"> *  {{c.song.description | lowercase}}</span>
+                            </div>
+                            </span>
+                            </li>
+                            </span>
+                        </ul>
+                    </section>
+                </section>
+            </aside>
+            <!-- / side content -->
+            <section class="col-sm-4 no-padder bg">
+                <section class="vbox">
+                    <section class="scrollable hover">
+                        <ul class="list-group list-group-lg no-bg auto m-b-none m-t-n-xxs">
+                            <li class="list-group-item clearfix">
+                                <input #terminoBuscarCancion (keyup.enter)="buscarCancion(terminoBuscarCancion.value)" type="text" name="" id="" class="form-control" placeholder="Buscar canción para agregar a la playList (enter)" style="background-color: #232C32; border: black; color: ghostwhite;">
+                            </li>
+                            <li *ngFor="let c of canciones" class="list-group-item clearfix" (dblclick)="agregarCancionAPlayList(c)">
+                                <a href="javascript:;" (click)="reproducirCancion(c, 'c')" class="jp-play-me pull-right m-t-sm m-l text-md">
+                                    <i *ngIf="!c.rp" class="icon-control-play text"></i>
+                                    <span *ngIf="c.rp" class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                                        <span class="bar1 a1 bg-primary lter"></span>
+                                    <span class="bar2 a2 bg-info lt"></span>
+                                    <span class="bar3 a3 bg-success"></span>
+                                    <span class="bar4 a4 bg-warning dk"></span>
+                                    <span class="bar5 a5 bg-danger dker"></span>
+                                    </span>
+                                    <i *ngIf="c.rp" style="color: rgb(0, 198, 212);" class="icon-control-pause text"></i>
+                                </a>
+                                <a href="javascript:;" class="pull-left thumb-sm m-r">
+                                    <img src="assets/images/cancion.png" alt="..." class="img-circle">
+                                </a>
+                                <a class="clear" href="javascript:;">
+                                    <span class="block text-ellipsis">{{c.name | uppercase}} || {{c.duration | convertirSegundos  }}</span>
+                                    <small class="text-muted">{{c.description}}</small>
+                                </a>
+                            </li>
+                            <li *ngIf="!buscadorCancion && paginacion.paginaTotal > 1" class="list-group-item clearfix">
+                                <ul class="pagination pagination-sm m-t-none m-b-none">
+                                    <li [ngClass]="{'disabled': !btnAntC}"><a href="javascript:;" (click)="paginaAnteriorC();"><i class="fa fa-chevron-left"></i> Anterior</a></li>
+
+                                    <li [ngClass]="{'disabled': !btnSigC}"><a href="javascript:;" (click)="paginaSiguienteC();">Siguiente<i class="fa fa-chevron-right"></i></a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </section>
+                </section>
+            </section>
+            <section class="col-sm-3 no-padder lt">
+                <section class="vbox">
+                    <section class="scrollable hover">
+                        <div class="m-t-n-xxs">
+
+
+
+                            <div class="item pos-rlt" style="padding: 5px; margin-top: 11px; padding-left: 10px;">
+
+                                <input #terminoBuscar (keyup.enter)="buscarPlayList(terminoBuscar.value)" type="text" name="" id="" class="form-control cambiarFondo" placeholder="Buscar Lista de reproducción (enter)" style="background-color: #2F3940; border: black; color: ghostwhite;">
+
+                            </div>
+
+                            <div class="item pos-rlt" *ngFor="let pl of playLists; let i = index" [class.otroColor]="i % 2 !== 0 ">
+                                <a href="javascript:;" class="item-overlay active opacity wrapper-md font-xs " [class.text-right]="i % 2 !== 0 ">
+
+                                    <span *ngIf="i % 2 == 0" class="block h3 font-bold text-info">{{pl.name}}</span>
+                                    <span *ngIf="i % 2 !== 0" class="block h3 font-bold text-success text-u-c">{{pl.name}}</span>
+                                    <span class="text-muted">{{pl.description}}</span>
+                                    <span class="bottom wrapper-md block">- <i (click)="cargarPlayList(pl._id)" class="icon-arrow-right i-lg " [class.pull-right]="i % 2 == 0 " [class.pull-left]="i % 2 !== 0 "></i></span>
+                                </a>
+                                <a href="javascript:;" style="text-align: center;">
+                                    <div style="text-align: center;">
+                                        <img [src]="pl?.img | imagen: 'playListsIMG'" alt="Img-Playlist" style="max-width: 200px;">
+                                    </div>
+                                    <!-- <img class="img-full" src="assets/images/m40.jpg" alt="..."> -->
+                                </a>
+                            </div>
+
+
+                            <div class="item pos-rlt">
+
+                                <li *ngIf="!buscadorPlayList && paginacionPl.paginaTotal > 1" class="list-group-item clearfix" style="background-color: #2F3940; border-color: #2F3940 ;">
+                                    <ul class="pagination pagination-sm m-t-none m-b-none">
+                                        <li><a (click)="paginaAnteriorPL();" href="javascript:;"><i class="fa fa-chevron-left"></i> Anterior</a></li>
+
+                                        <li><a (click)="paginaSiguientePL();" href="javascript:;">Siguiente<i class="fa fa-chevron-right"></i></a></li>
+                                    </ul>
+                                </li>
+
+
+                            </div>
+
+                        </div>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+
+</section>

@@ -1,0 +1,278 @@
+<section class="hbox stretch" style="margin-top: 60px;">
+    <aside class="aside-lg bg-light b-r" id="aside">
+        <div class="wrapper" *ngIf="nuevaCancion || editarCancion">
+            <h4 class="m-t-none" *ngIf="nuevaCancion">Crear canción</h4>
+            <h4 class="m-t-none" *ngIf="editarCancion">Editar canción</h4>
+            <form [formGroup]="cancionFormGroup">
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input formControlName="name" name="name" type="text" placeholder="Nombre de la canción" class="input-sm form-control">
+                </div>
+                <div class="form-group" style="display: none;">
+                    <label>Duración</label>
+                    <input formControlName="duration" name="duration" type="number" placeholder="Duración de la canción" class="datepicker input-sm form-control">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea id="" formControlName="description" name="description" class="form-control" cols="3" rows="3" placeholder="Ingresa una descripción"></textarea>
+                </div>
+                <div class="alert alert-danger" *ngIf="msgError !== ''">
+                    <i class="fa fa-ban-circle"></i><strong>Alerta !</strong> <a href="javascript:;" class="alert-link"> {{msgError}}</a>
+                </div>
+                <div class="alert alert-success" *ngIf="msgExito !== ''">
+
+                    <i class="fa fa-ban-circle"></i><strong>Exito !</strong> <a href="javascript:;" class="alert-link"> {{msgExito}}</a>
+                </div>
+
+            </form>
+
+
+        </div>
+
+
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="nuevaCancion"><button (click)="crearCancion()" class="btn btn-sm btn-default" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>    Crear cancion</button></div>
+        <div class="m-t-lg" style="padding-left: 15px;" *ngIf="editarCancion"><button (click)="editarCancionDb()" class="btn btn-sm btn-info" [disabled]="cargando"> <i *ngIf="cargando" class="fa fa-refresh " [ngClass]="{'fa-spin': cargando === true}"></i>   Editar cancion</button> -||- <button (click)="cancelarEdicion()"
+                class="btn btn-sm btn-danger"> <i class="fa fa-times"></i> Cancelar</button></div>
+
+
+        <div class="wrapper" *ngIf="!nuevaCancion && !editarCancion">
+            <div class="panel wrapper">
+                <div class="row text-center">
+                    <span style="color: blue">{{album?.title}}   </span>
+                    <div class="col-xs-12">
+                        <a href="javascript:;">
+                            <span class="m-b-xs h4 block">{{paginacion?.totalItems}}</span>
+                            <small class="text-muted">Canciones</small>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-group btn-group-justified m-b">
+                <a *ngIf="!nuevaCancion" (click)="nuevaCancion = true" href="javascript:;" class="btn btn-s-md btn-success btn-rounded">Crear canción</a>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="!nuevaCancion && !editarCancion && subirCancion" class="panel-body">
+
+
+            <!-- /////// -->
+
+            <section class="panel panel-info">
+                <div class="panel-body">
+
+                    <div class="clear">
+                        <a href="javascript:;" class="text-info"><i class="icon-music-tone"></i> {{cancionSubir.name}} <i class="icon-twitter"></i></a>
+                        <br><br>
+                        <small class="block text-muted"></small>
+                        <button [disabled]="loading" (click)="cancionInput.click()" class="btn btn-sm btn-default btn-bg"><i class="fa fa-paperclip"></i> Adjuntar</button>
+                        <button [disabled]="loading" *ngIf="cancionTemp" (click)="subirCancionFile()" style="margin-left: 5px;" class="btn btn-sm btn-info btn-bg"><i class="fa fa-spinner fa fa-spin fa fa-large" *ngIf="loading"></i>  <i class="icon-music-tone-alt"></i>  Enviar canción</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ///////// -->
+
+
+            <input #cancionInput type="file" (change)="cambiarCancion($event.target )" name="" id="" style="display: none;">
+            <br>
+            <div class="alert alert-danger" *ngIf="msgError !== ''">
+
+                <i class="fa fa-ban-circle"></i><strong>Alerta !</strong> <a href="javascript:;" class="alert-link"> {{msgError}}</a>
+            </div>
+            <div class="alert alert-success" *ngIf="msgExito !== ''">
+
+                <i class="fa fa-ban-circle"></i><strong>Exito !</strong> <a href="javascript:;" class="alert-link"> {{msgExito}}</a>
+            </div>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <section class="vbox animated fadeInUp">
+        <section class="scrollable">
+
+            <section class="vbox" style="margin-right: 17px;">
+                <section>
+                    <section class="hbox stretch">
+                        <!-- .aside -->
+
+                        <!-- /.aside -->
+                        <section id="content">
+                            <section class="vbox">
+                                <section class="w-f-md">
+                                    <section class="hbox stretch bg-black dker" style="padding: 18px;">
+                                        <!-- side content -->
+                                        <aside class="col-sm-5 no-padder" id="sidebar">
+                                            <section class="vbox animated fadeInUp">
+                                                <section class="scrollable">
+                                                    <input #teminoBusqueda (keyup.enter)="buscarCancion(teminoBusqueda.value)" placeholder="Buscar canción  (enter)" type="text" class="form-control" style="background-color: #232C32; border:none; color:silver;">
+                                                    <br>
+                                                    <ul class="list-group list-group-lg no-radius no-border no-bg m-t-n-xxs m-b-none auto">
+                                                        <li *ngFor="let c of canciones" class="list-group-item">
+                                                            <div class="pull-right m-l">
+                                                                <a href="javascript:;" (click)="adjuntarCancion(c._id)" class="m-r-sm"><i class="icon-cloud-upload"></i></a>
+                                                                <a href="javascript:;" (click)="actualizarCancionForm(c._id)" class="m-r-sm"><i class="fa icon-pencil"></i></a>
+                                                                <a href="javascript:;" (click)="cancionAddPlayList = c._id;  addPlayList =[] " data-toggle="modal" data-target="#myModal"><i class="icon-playlist"></i></a> &nbsp;&nbsp;
+                                                                <a href="javascript:;" (click)="nameCancionEliminar = c.name; idCancionEliminar = c._id" data-toggle="modal" data-target="#myModalE"><i style="color: red;" class="fa fa-trash-o"></i></a>
+
+                                                            </div>
+                                                            <a href="javascript:;" (click)="startPlayer(c)" class="jp-play-me m-r-sm pull-left ">
+                                                                <i *ngIf="!c.rp" class="icon-control-play text "></i>
+                                                                <i *ngIf="c.rp" style="color: rgb(0, 198, 212);" class="icon-control-pause "></i>
+                                                                <span *ngIf="c.rp" class="musicbar animate inline m-l-sm" style="width:20px;height:20px">
+                                                                    <span class="bar1 a1 bg-primary lter"></span>
+                                                                <span class="bar2 a2 bg-info lt"></span>
+                                                                <span class="bar3 a3 bg-success"></span>
+                                                                <span class="bar4 a4 bg-warning dk"></span>
+                                                                <span class="bar5 a5 bg-danger dker"></span>
+                                                                </span>
+                                                            </a>
+                                                            <div class="clear text-ellipsis">
+                                                                <span [ngClass]="{'rojo': c.file === null}">{{ c.name }}</span>
+                                                                <span [ngClass]="{'rojo': c.file === null}" class="text-muted"> || Duración: {{c.duration | convertirSegundos}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                                <span class="text-muted">  {{c.description}}</span>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
+
+                                                    <footer class="panel-footer" style="background-color: #0D1215;">
+
+                                                        <div class="row">
+                                                            <div class="col-sm-4 hidden-xs">
+                                                                <span *ngIf="!buscadorCancion && paginacion.paginaTotal > 1">
+                                                                    <select #numItem (change)="cambiarItemCancion(numItem.value)" class="input-sm form-control input-s-sm inline v-middle">
+                                                                    <option value="">listar</option>
+                                                                    <option  value="20">20 Dispositivos</option>
+                                                                    <option  value="50">50 Dispositivos</option>
+                                                                    <option  value="100">100 Dispositivos</option>
+                                                                    </select>
+                                                                </span>
+                                                            </div>
+                                                            <div class="col-sm-4 text-center">
+                                                                <small class="text-muted inline m-t-sm m-b-sm">Mostrando desde <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) < 1">1</span>  <span *ngIf="((paginacion.items * paginacion.pagina) - paginacion.items) > 0">{{(paginacion.items * paginacion.pagina) - paginacion.items }}</span> a    <span *ngIf="(paginacion.items * paginacion.pagina) >= paginacion.totalItems "> {{paginacion.totalItems}}</span>  <span *ngIf="(paginacion.items * paginacion.pagina) < paginacion.totalItems ">{{paginacion.items * paginacion.pagina}}</span>      de {{ paginacion.totalItems }} canciones</small>
+                                                            </div>
+                                                            <div class="col-sm-4 text-right text-center-xs">
+                                                                <ul class="pagination pagination-sm m-t-none m-b-none">
+                                                                    <li [ngClass]="{'disabled': !btnAnt}">
+                                                                        <a href="javascript:;" (click)="paginaAnterior()"><i class="fa fa-chevron-left"></i> Anterior</a>
+                                                                    </li>
+
+                                                                    <li [ngClass]="{'disabled': !btnSig}">
+                                                                        <a href="javascript:;" (click)="paginaSiguiente() ">Siguiente <i class="fa fa-chevron-right "></i></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </footer>
+
+                                                </section>
+
+                                            </section>
+                                        </aside>
+                                        <!-- / side content -->
+
+                                    </section>
+                                </section>
+
+                            </section>
+
+                        </section>
+                    </section>
+                </section>
+
+            </section>
+
+
+        </section>
+    </section>
+
+</section>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Seleccione una o varias listas de reproducción.</h4>
+            </div>
+            <div class="modal-body">
+
+
+
+                <div class="table-responsive">
+                    <table class="table table-striped b-t b-light">
+                        <thead>
+                            <tr>
+                                <th style="width:20px;"><label class="checkbox m-n i-checks"></label></th>
+                                <th class="th-sortable" data-toggle="class">PlayList
+                                    <span class="th-sort">
+                              <i class="fa fa-sort-down text"></i>
+                              <i class="fa fa-sort-up text-active"></i>
+                              <i class="fa fa-sort"></i>
+                            </span>
+                                </th>
+                                <th>Tipo</th>
+                                <th>Descripción</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of playLists">
+                                <td><label class="checkbox m-n i-checks"><input  type="checkbox" (click)="playListSeleccionada(p._id)"  name=""><i></i></label></td>
+                                <td> <img [src]="p.img | imagen: 'playListsIMG'" style="max-height: 30px; padding: 0px;"> {{p.name}}</td>
+                                <td>{{p.type}}</td>
+                                <td>{{p.description}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button (click)="guardarCancionesEnPlayList()" type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Modal Eliminar PlayList -->
+<div class="modal fade" id="myModalE" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-small" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title " id="myModalLabel ">Eliminar Canción</h4>
+            </div>
+            <div class="modal-body ">
+                <p>Para eliminar la cancíon copie <span style="color: red; ">{{nameCancionEliminar}}</span> en el siguiente campo:</p>
+                <input #campoEliminar [(ngModel)]="inputcancionEliminar " type="text " class="form-control " name=" " id=" ">
+                <br>
+                <div class="alert alert-danger ">
+                    <i class="fa fa-ban-circle "></i><strong>Ey!! </strong> Al eliminar la canción <a href="# " class="alert-link ">{{nameCancionEliminar}}</a>, se borrará de todas las listas de reproducción en las que se encuentre asociada.
+                </div>
+            </div>
+            <div class="modal-footer ">
+                <button [disabled]="loading" (click)="campoEliminar.value='' " type="button " class="btn btn-default " data-dismiss="modal ">Cancelar</button>
+                <button [disabled]="loading" (click)="eliminarCancion() " type="button " class="btn btn-danger ">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

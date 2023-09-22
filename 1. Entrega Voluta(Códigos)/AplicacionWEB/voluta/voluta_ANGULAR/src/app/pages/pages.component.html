@@ -1,0 +1,24 @@
+<section class="vbox">
+
+    <app-header></app-header>
+
+    <section>
+        <section class="hbox stretch">
+            <!-- .aside -->
+            <aside class="bg-black aside " id="nav">
+
+                <!-- nav -->
+                <app-sidebar></app-sidebar>
+                <!-- / nav -->
+
+            </aside>
+            <!-- /.aside -->
+            <section id="content">
+
+                <router-outlet></router-outlet>
+                <app-player class="player"></app-player>
+                <!-- <a href="#" class="hide nav-off-screen-block" data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a> -->
+            </section>
+        </section>
+    </section>
+</section>
